@@ -21,45 +21,30 @@ export const featuresReducer = (state = initialState, action) => {
     console.log(state)
     switch (action.type) {
         case ADD_FEATURE:
-            const newFeature = {
-                id: action.payload.id,
-                name: action.payload.name,
-                price: action.payload.price
-            }
             return {
                 ...state,
                 car: {
                     ...state.car,
-                    features: [...state.car.features, newFeature]
+                    features: [...state.car.features, action.payload]
                     // , price: state.car.price + newFeature.price
                 },
                 additionalFeatures: state.additionalFeatures.filter(item => {
-                    // debugger
-                    if (item.id !== newFeature.id) {
-                        return item
-                    }
+                    return item.id !== action.payload.id
                 }),
-                additionalPrice: state.additionalPrice + newFeature.price
+                additionalPrice: state.additionalPrice + action.payload.price
             }
 
         case REMOVE_FEATURE:
-            const addedFeature = {
-                id: action.payload.id,
-                name: action.payload.name,
-                price: action.payload.price
-            }
             return {
                 ...state,
-                additionalFeatures: [...state.additionalFeatures, addedFeature], 
+                additionalFeatures: [...state.additionalFeatures, action.payload], 
                 car:{
                     ...state.car,
                     features: state.car.features.filter(item => {
-                        if(item.id !== addedFeature.id){
-                            return item
-                        }
+                      return item.id !== action.payload.id  
                     })
                 },
-                additionalPrice: state.additionalPrice - addedFeature.price
+                additionalPrice: state.additionalPrice - action.payload.price
             }
 
         default:
